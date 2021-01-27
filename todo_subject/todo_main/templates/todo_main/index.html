@@ -1,1 +1,17 @@
-<h1>안녕하세요. 메인입니다.</h1>
+<!-- 상속 -->
+{% extends 'todo_main/common/header.html' %}
+<!-- static 폴더와 연결 -->
+{% load static %}
+
+<!-- 상속한 파일에 아래 코드 연결 -->
+{% block main %}
+
+<div class='col-md-12'>
+  <div class='container'>
+    <center>
+      <h1>todo 메인화면입니다.</h1>
+    </center>
+    <p></p>
+  </div>
+</div>
+{% endblock main %}

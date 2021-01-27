@@ -1,0 +1,22 @@
+{% extends 'todo_main/common/header.html' %}
+{%load static%}
+{% block main %}
+<div class='col-md-12'>
+  <div class='container'>
+    {% for list in todo_list %}
+    <div class='list-group-item'>
+      <input type='checkbox' name={{list.title}} value={{list.title}}>
+      <!-- 만약 클릭 했을 때, todo_board:todo_board_detail의 url로 가게 하는데 pk값을 list.no로 설정하시오 -->
+      <a href="{% url 'todo_board:todo_board_detail' pk=list.no %}">{{list.title}}</a>
+    </div>
+    <br>
+    {% endfor %}
+    <div>
+      <button type='button' class='btn btn-primary' onclick="location.href='{% url 'todo_board:todo_board_insert' %} '">
+        글쓰기
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock main %}
