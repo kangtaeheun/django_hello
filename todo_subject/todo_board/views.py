@@ -32,3 +32,24 @@ def check_post(request):
         template_name = 'todo_board/todo_board_insert.html'
         form = TodoForm
         return render(request, template_name, {'form' : form})
+
+class Todo_board_update(generic.UpdateView):
+    model = TodoList
+    fields = ('title', 'content', 'end_date')
+    template_name = 'todo_board/todo_board_update.html'
+    # success_url 은 업데이트 성공 시 이동하는 url
+    success_url = '/board/'
+
+    # save 기능
+    def form_valid(self, form):
+        form.save()
+        return render(self.request, 'todo_board/todo_board_success.html', {"message":"일정을 업데이트 하였습니다."})
+
+    # form 데이터 받아오는 기능
+    def get(self, request, *args, **kwargs):
+        # 오브젝트를 받아와서 폼 클래스를 받아온 후 이것을 return 해줘야 한다.
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        context = self.get_context_data(object=self.object, form=form)
+        return self.render_to_response(context)
