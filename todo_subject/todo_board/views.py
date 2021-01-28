@@ -53,3 +53,8 @@ class Todo_board_update(generic.UpdateView):
         form = self.get_form(form_class)
         context = self.get_context_data(object=self.object, form=form)
         return self.render_to_response(context)
+
+class Todo_board_delete(generic.DeleteView):
+    model = TodoList
+    success_url = '/board/'
+    context_object_name = 'todo_list'
