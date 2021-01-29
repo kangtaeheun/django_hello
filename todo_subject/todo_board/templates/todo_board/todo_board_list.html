@@ -1,22 +1,58 @@
 {% extends 'todo_main/common/header.html' %}
 {%load static%}
 {% block main %}
-<div class='col-md-12'>
-  <div class='container'>
-    {% for list in todo_list %}
-    <div class='list-group-item'>
-      <input type='checkbox' name={{list.title}} value={{list.title}}>
-      <!-- 만약 클릭 했을 때, todo_board:todo_board_detail의 url로 가게 하는데 pk값을 list.no로 설정하시오 -->
-      <a href="{% url 'todo_board:todo_board_detail' pk=list.no %}">{{list.title}}</a>
+
+<div class="alert alert-info">
+    <strong>마감이 지난 일정!</strong> {{ over_end_day }}
+</div>
+<div class="alert alert-info">
+    <strong>마감이 가까운 일정!</strong> {{ close_end_day }}
+</div>
+<div class="col-md-4">
+    <div class="container">
+        <h2>기한 있는 일정</h2><br>
+        <div id="todo_list_endDate" class="list-group col">
+            {% for list in todo_list_endDate_non_complete %}
+            <div class="list-group-item" div_pk={{list.no}} priority={{list.priority}}><input type="checkbox" pk={{list.no}} name="end_non_complete" value={{list.title}}> <a href="{% url 'todo_board:todo_board_detail' pk=list.no %}">{{list.title}}</a><p>{{list.end_date}}</p></div>
+            {% endfor %}
+        </div>
     </div>
-    <br>
-    {% endfor %}
-    <div>
-      <button type='button' class='btn btn-primary' onclick="location.href='{% url 'todo_board:todo_board_insert' %} '">
-        글쓰기
-      </button>
+</div>
+<div class="col-md-4">
+    <div class="container">
+        <h2>기한 없는 일정</h2><br>
+        <div id="todo_list_no_endDate" class="list-group col">
+        {% with end_date="마감일 없음" %}
+            {% for list in todo_list_no_endDate %}
+            <div class="list-group-item" div_pk={{list.no}}><input type="checkbox" pk={{list.no}} name="no_endDate_non_complete" value={{list.title}}> <a href="{% url 'todo_board:todo_board_detail' pk=list.no %}">{{list.title}}</a><p>{{end_date}}</p></div>
+            {% endfor %}
+        {% endwith %}
+        </div>
     </div>
-  </div>
+</div>
+
+<div class="col-md-4">
+    <div class="container">
+        <h2>마감 된 일정</h2><br>
+        <div class="list-group col">
+            {% with end_date="마감일 없음" %}
+                {% for list in todo_list_endDate_complete %}
+                    {% if list.end_date == None %}
+                        <div class="list-group-item list-group-item-success" div_pk={{list.priority}}><input type="checkbox" pk={{list.no}} name="complete" value={{list.title}}> <a href="{% url 'todo_board:todo_board_detail' pk=list.no %}">{{list.title}}</a><p>{{end_date}}</p></div>
+                    {% else %}
+                        <div class="list-group-item list-group-item-success" div_pk={{list.priority}}><input type="checkbox" pk={{list.no}} name="complete" value={{list.title}}> <a href="{% url 'todo_board:todo_board_detail' pk=list.no %}">{{list.title}}</a><p>{{list.end_date}}</p></div>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+<div>
+  <button type='button' class='btn btn-primary' onclick="location.href='{% url 'todo_board:todo_board_insert' %} '">
+    글쓰기
+  </button>
+</div>
+</div>
 </div>
 
 {% endblock main %}
